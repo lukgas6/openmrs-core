@@ -222,7 +222,6 @@ public class PatientSearchCriteria {
 	/**
 	 * Utility method to add name expressions to criteria.
 	 * 
-	 * @param criteria
 	 * @param name
 	 */
 	private Criterion prepareNameCriterion(String name) {
@@ -238,15 +237,15 @@ public class PatientSearchCriteria {
 		String[] names = name.split(" ");
 		
 		if (names.length > 0) {
-			String nameSoFar = names[0];
+			StringBuilder nameSoFar = new StringBuilder(names[0]);
 			for (int i = 0; i < names.length; i++) {
 				String n = names[i];
 				if (n != null && n.length() > 0) {
 					LogicalExpression oneNameSearch = getNameSearch(n);
 					LogicalExpression searchExpression = oneNameSearch;
 					if (i > 0) {
-						nameSoFar += " " + n;
-						LogicalExpression fullNameSearch = getNameSearch(nameSoFar);
+						nameSoFar.append(" ").append(n);
+						LogicalExpression fullNameSearch = getNameSearch(nameSoFar.toString());
 						searchExpression = Restrictions.or(oneNameSearch, fullNameSearch);
 					}
 					conjuction.add(searchExpression);
